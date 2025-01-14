@@ -1,7 +1,12 @@
+/* font face */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+
 body {
-  margin-left: 0px;
-  margin-top: 0;
+  font-family: 'Rubik';
+  margin: 0px;
   width: 100vw;
   min-height: 100vh;
+  background-color: black !important;
 }
 

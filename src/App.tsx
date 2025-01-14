@@ -1,27 +1,26 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+// pages
+import Home from './pages/Home'
+import MovieScreen from './pages/MovieScreen'
+
+// stylesheet
 import './App.css'
 
 const App: React.FC = () => {
 
   return (
     <>
-      <div className='wrapper'>
-        <div className='video'>
-          {/* poster */}
-          <img src="/posters/poster_1.jpg" alt="Poster 1" />
-        </div>
-        <div className='video'>
-          {/* poster */}
-          <img src="/posters/poster_2.jpg" alt="Poster 2" />
-        </div>
-        <div className='video'>
-          {/* poster */}
-          <img src="/posters/poster_3.jpg" alt="Poster 3" />
-        </div>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' Component={Home} />
+          <Route path='/screen' Component={MovieScreen}></Route>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
+
 
 export default App
