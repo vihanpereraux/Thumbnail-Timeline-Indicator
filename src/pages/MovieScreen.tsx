@@ -25,17 +25,12 @@ const MovieScreen: React.FC = () => {
         setisVideoPlaying(true)
     }
 
-    const onPaueHandler = () => {
+    const onPauseHandler = () => {
         setisVideoPlaying(false)
-
-        console.log(playerRef.current?.getCurrentTime())
-        
-        localStorage.setItem('playedSeconds', JSON.parse(String(playerRef.current?.getCurrentTime()))) 
-        
-        setVideoPlayedSeconds(parseFloat( localStorage.getItem('playedSeconds') as string ))
-        
-        let lol = (localStorage.getItem('playedSeconds'))
-        console.log(parseFloat(lol as string))
+        // 
+        localStorage.setItem('playedSeconds', JSON.parse(String(playerRef.current?.getCurrentTime())))
+        // 
+        setVideoPlayedSeconds(parseFloat(localStorage.getItem('playedSeconds') as string))
     }
 
     return (
@@ -59,15 +54,8 @@ const MovieScreen: React.FC = () => {
                     width={1280 / 2}
                     height={720 / 2}
                     controls={true}
-                    onDuration={(media) => {
-                        // console.log(media)
-                    }}
                     onPlay={onPlayHandler}
-                    onPause={onPaueHandler}
-                    onProgress={(progress) => {
-                        // console.log(progress.playedSeconds)
-                        // localStorage.setItem('playedSeconds', JSON.parse(String(progress.playedSeconds)))
-                    }}
+                    onPause={onPauseHandler}
                     onSeek={() => { 1000 }}
                     url="/movies/movie.mp4"
                     onReady={onReady}
