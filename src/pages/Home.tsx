@@ -3,30 +3,35 @@ import { useNavigate } from "react-router-dom";
 
 const movieList = [
     {
+        id: 1,
         title: "Tenet",
         poster: '/posters/poster_1.jpg',
         url: '/movies/movie.mp4',
     },
     {
+        id: 2,
         title: "1917",
         poster: '/posters/poster_2.jpg',
         url: '/movies/movie.mp4'
     },
     {
+        id: 3,
         title: "Oblivion",
         poster: '/posters/poster_3.jpg',
         url: '/movies/movie.mp4'
     }
 ]
 
-console.log(movieList.length)
+let userClickDetails :any[] = []
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
 
     // poster click handler
-    const handlePosterClick = () => {
-        navigate('/screen')
+    const handlePosterClick = (id: number, title: string) => {
+        // localStorage.setItem('userClickDetails', JSON.stringify(userClickDetails))
+        // navigate('/screen')
+        navigate('/screen', { state: { id, title } });
     }
 
     return (
@@ -38,7 +43,7 @@ const Home: React.FC = () => {
                         className='video'>
                         {/* poster */}
                         <img
-                            onClick={handlePosterClick}
+                            onClick={() => handlePosterClick(movie.id, movie.title)}
                             src={movie.poster} alt="Poster" />
                         {/* title */}
                         <p>{movie.title}</p>
