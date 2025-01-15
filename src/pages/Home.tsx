@@ -22,8 +22,6 @@ const movieList = [
     }
 ]
 
-let userClickDetails :any[] = []
-
 const Home: React.FC = () => {
     const navigate = useNavigate();
 

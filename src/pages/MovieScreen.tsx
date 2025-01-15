@@ -10,8 +10,10 @@ import {
     UserClickDetailsProps
 } from "../interfaces/MovieScreenProps";
 
+// 
 let userClickDetails: UserClickDetailsProps[] = [];
 
+// 
 let currentMovieDetails: UserClickDetailsProps = {
     id: 0,
     title: "",
@@ -26,41 +28,43 @@ const MovieScreen: React.FC = () => {
     const [videoPlayedSeconds, setVideoPlayedSeconds] = useState<number>(0)
     const [isVideoPlaying, setisVideoPlaying] = useState<boolean>(false)
 
+
     useEffect(() => {
-        // localStorage.setItem('userClickDetails', JSON.stringify([]))
-        userClickDetails = JSON.parse(localStorage.getItem('userClickDetails') as string);
+        // 
+        localStorage.getItem('userClickDetails') as string === null ?
+            localStorage.setItem('userClickDetails', JSON.stringify(userClickDetails))
+            :
+            userClickDetails = JSON.parse(localStorage.getItem('userClickDetails') as string);
 
-        for (let i = 0; i < userClickDetails.length; i++) {
-            if (id == userClickDetails[i].id) {
-                currentMovieDetails.id
-                    = userClickDetails[i].id;
-                currentMovieDetails.title
-                    = userClickDetails[i].title;
-                currentMovieDetails.videoPlayedSeconds
-                    = userClickDetails[i].videoPlayedSeconds;
-
-                setVideoPlayedSeconds(userClickDetails[i].videoPlayedSeconds)
-            }
-        }
-
+        // 
         const isMovieInList = userClickDetails.some(movie => movie.id === id);
         console.log(isMovieInList)
         if (!isMovieInList) {
-            let userClickDetailsSnapshot = {
+            let detailsSnapshot = {
                 id: id,
                 title: title,
                 videoPlayedSeconds: 0
             }
-            userClickDetails.push(userClickDetailsSnapshot)
+            userClickDetails.push(detailsSnapshot)
             localStorage.setItem('userClickDetails', JSON.stringify(userClickDetails))
         }
+
+        //  
+        userClickDetails.map((movie) => {
+            if (id == movie.id) {
+                currentMovieDetails.id = movie.id;
+                currentMovieDetails.title = movie.title;
+                currentMovieDetails.videoPlayedSeconds = movie.videoPlayedSeconds;
+                setVideoPlayedSeconds(movie.videoPlayedSeconds)
+            }
+        })
     }, [])
 
     // ref
     const playerRef = useRef<ReactPlayer>(null);
     const onReady = () => {
         isVideoPlaying ?
-            ""
+            null
             :
             playerRef.current?.seekTo(videoPlayedSeconds, "seconds")
     }
