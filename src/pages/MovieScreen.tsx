@@ -17,7 +17,9 @@ let userClickDetails: UserClickDetailsProps[] = [];
 let currentMovieDetails: UserClickDetailsProps = {
     id: 0,
     title: "",
-    videoPlayedSeconds: 0
+    videoPlayedSeconds: 0,
+    totalLenght: 0,
+    playedPrecentage: 0
 }
 
 const MovieScreen: React.FC = () => {
@@ -25,9 +27,18 @@ const MovieScreen: React.FC = () => {
     const location = useLocation();
     const { id, title } = location.state as MovieScreenProps;
 
+    const [duration, setDuration] = useState<number>(0)
     const [videoPlayedSeconds, setVideoPlayedSeconds] = useState<number>(0)
     const [isVideoPlaying, setisVideoPlaying] = useState<boolean>(false)
 
+    // ref
+    const playerRef = useRef<ReactPlayer>(null);
+    const onReady = () => {
+        isVideoPlaying ?
+            null
+            :
+            playerRef.current?.seekTo(videoPlayedSeconds, "seconds")
+    }
 
     useEffect(() => {
         // 
@@ -43,7 +54,9 @@ const MovieScreen: React.FC = () => {
             let detailsSnapshot = {
                 id: id,
                 title: title,
-                videoPlayedSeconds: 0
+                videoPlayedSeconds: 0,
+                totalLenght: duration,
+                playedPrecentage: 0
             }
             userClickDetails.push(detailsSnapshot)
             localStorage.setItem('userClickDetails', JSON.stringify(userClickDetails))
@@ -60,27 +73,31 @@ const MovieScreen: React.FC = () => {
         })
     }, [])
 
-    // ref
-    const playerRef = useRef<ReactPlayer>(null);
-    const onReady = () => {
-        isVideoPlaying ?
-            null
-            :
-            playerRef.current?.seekTo(videoPlayedSeconds, "seconds")
-    }
-
     const onPlayHandler = () => {
         setisVideoPlaying(true)
+
+        // 
+        currentMovieDetails.totalLenght = duration
     }
 
     const onPauseHandler = () => {
         setisVideoPlaying(false)
+
+        console.log(currentMovieDetails.videoPlayedSeconds)
+        console.log(duration)
+        console.log((currentMovieDetails.videoPlayedSeconds / duration) * 100)
+        
+        // 
+        currentMovieDetails.playedPrecentage
+            = (currentMovieDetails.videoPlayedSeconds / duration) * 100
         // 
         currentMovieDetails.videoPlayedSeconds = playerRef.current?.getCurrentTime() as number
         // 
         userClickDetails.map((movie) => {
             if (movie.id == id) {
                 movie.videoPlayedSeconds = currentMovieDetails.videoPlayedSeconds;
+                movie.totalLenght = duration;
+                movie.playedPrecentage = currentMovieDetails.playedPrecentage
             }
         });
         // 
@@ -109,6 +126,10 @@ const MovieScreen: React.FC = () => {
                     width={1280 / 2}
                     height={720 / 2}
                     controls={true}
+                    onDuration={(seconds) => {
+                        console.log(seconds)
+                        setDuration(seconds)
+                    }}
                     onPlay={onPlayHandler}
                     onPause={onPauseHandler}
                     // onSeek={() => { 1000 }}

@@ -1,7 +1,9 @@
 export interface UserClickDetailsProps {
     id: number,
     title: string,
-    videoPlayedSeconds: number
+    videoPlayedSeconds: number,
+    totalLenght: number,
+    playedPrecentage: number
 }
 
 export interface MovieScreenProps {
