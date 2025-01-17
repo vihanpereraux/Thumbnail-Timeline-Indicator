@@ -86,17 +86,22 @@ const MovieScreen: React.FC = () => {
         console.log(currentMovieDetails.videoPlayedSeconds)
         console.log(duration)
         console.log((currentMovieDetails.videoPlayedSeconds / duration) * 100)
-        
+
+        // 
+        currentMovieDetails.videoPlayedSeconds = playerRef.current?.getCurrentTime() as number
+
         // 
         currentMovieDetails.playedPrecentage
             = (currentMovieDetails.videoPlayedSeconds / duration) * 100
-        // 
-        currentMovieDetails.videoPlayedSeconds = playerRef.current?.getCurrentTime() as number
+
         // 
         userClickDetails.map((movie) => {
             if (movie.id == id) {
                 movie.videoPlayedSeconds = currentMovieDetails.videoPlayedSeconds;
-                movie.totalLenght = duration;
+                movie.totalLenght > 0 ?
+                    movie.totalLenght = duration
+                    :
+                    null
                 movie.playedPrecentage = currentMovieDetails.playedPrecentage
             }
         });
